@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in — Calmly Writer</title>
+    <script>
+        (function () {
+            var t = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/base.css">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Calmly Writer</h1>
+        <p class="subtitle">Sign in to continue writing</p>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn-primary" id="submit-btn">Sign in</button>
+            <p class="error-message" id="error-message"></p>
+        </form>
+        <p class="auth-footer">
+            Don't have an account? <a href="/register.html">Create one</a>
+        </p>
+    </div>
+</div>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/theme.js"></script>
+<script>
+    Auth.redirectIfLoggedIn();
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        const errorEl = document.getElementById('error-message');
+        errorEl.textContent = '';
+        btn.disabled = true;
+
+        try {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const response = await API.login(email, password);
+            Auth.saveSession(response);
+            window.location.href = '/editor.html';
+        } catch (err) {
+            errorEl.textContent = "Invalid credentials";
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

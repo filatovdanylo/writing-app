@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calmly Writer</title>
+    <script>
+        (function () {
+            var t = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+            if (localStorage.getItem('token')) {
+                window.location.replace('/editor.html');
+            } else {
+                window.location.replace('/login.html');
+            }
+        })();
+    </script>
+</head>
+<body></body>
+</html>

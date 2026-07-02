@@ -1,0 +1,26 @@
+:root,
+[data-theme="light"] {
+  --bg: #faf9f7;
+  --text: #2c2c2c;
+  --muted: #888;
+  --accent: #4a7c59;
+  --border: #e0ddd8;
+  --chrome-bg: #ffffff;
+  --editor-font: "Georgia", "Times New Roman", serif;
+  --scrollbar-thumb: rgba(44, 44, 44, 0.25);
+  --scrollbar-thumb-hover: rgba(44, 44, 44, 0.4);
+  --scrollbar-track: transparent;
+}
+
+[data-theme="dark"] {
+  --bg: #1a1a1a;
+  --text: #e8e6e3;
+  --muted: #888;
+  --accent: #6abf7b;
+  --border: #333;
+  --chrome-bg: #242424;
+  --editor-font: "Georgia", "Times New Roman", serif;
+  --scrollbar-thumb: rgba(232, 230, 227, 0.2);
+  --scrollbar-thumb-hover: rgba(232, 230, 227, 0.35);
+  --scrollbar-track: transparent;
+}

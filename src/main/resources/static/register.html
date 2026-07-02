@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create account — Calmly Writer</title>
+    <script>
+        (function () {
+            var t = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
+    <link rel="stylesheet" href="/css/theme.css">
+    <link rel="stylesheet" href="/css/base.css">
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card">
+        <h1>Calmly Writer</h1>
+        <p class="subtitle">Create your account</p>
+        <form id="register-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required minlength="8" autocomplete="new-password">
+            </div>
+            <div class="form-group">
+                <label for="repeat-password">Repeat password</label>
+                <input type="password" id="repeat-password" name="repeatPassword" required minlength="8"
+                       autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn-primary" id="submit-btn">Create account</button>
+            <p class="error-message" id="error-message"></p>
+        </form>
+        <p class="auth-footer">
+            Already have an account? <a href="/login.html">Sign in</a>
+        </p>
+    </div>
+</div>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/theme.js"></script>
+<script>
+    Auth.redirectIfLoggedIn();
+
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        const errorEl = document.getElementById('error-message');
+        errorEl.textContent = '';
+        btn.disabled = true;
+
+        try {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const repeatPassword = document.getElementById('repeat-password').value;
+            const response = await API.register(email, password, repeatPassword);
+            Auth.saveSession(response);
+            window.location.href = '/editor.html';
+        } catch (err) {
+            errorEl.textContent = err.message;
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

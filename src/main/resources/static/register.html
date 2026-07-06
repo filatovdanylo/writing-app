@@ -44,27 +44,28 @@
 <script src="/js/auth.js"></script>
 <script src="/js/theme.js"></script>
 <script>
-    Auth.redirectIfLoggedIn();
+    (async () => {
+        await Auth.redirectIfLoggedIn();
 
-    document.getElementById('register-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('submit-btn');
-        const errorEl = document.getElementById('error-message');
-        errorEl.textContent = '';
-        btn.disabled = true;
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const errorEl = document.getElementById('error-message');
+            errorEl.textContent = '';
+            btn.disabled = true;
 
-        try {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const repeatPassword = document.getElementById('repeat-password').value;
-            const response = await API.register(email, password, repeatPassword);
-            Auth.saveSession(response);
-            window.location.href = '/editor.html';
-        } catch (err) {
-            errorEl.textContent = err.message;
-            btn.disabled = false;
-        }
-    });
+            try {
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                const repeatPassword = document.getElementById('repeat-password').value;
+                await API.register(email, password, repeatPassword);
+                window.location.href = '/editor.html';
+            } catch (err) {
+                errorEl.textContent = err.message;
+                btn.disabled = false;
+            }
+        });
+    })();
 </script>
 </body>
 </html>

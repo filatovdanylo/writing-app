@@ -7,7 +7,7 @@ const Editor = {
     dirty: false,
 
     async init() {
-        Auth.requireAuth();
+        await Auth.requireAuth();
 
         const docs = await Documents.loadList();
         if (docs.length === 0) {

@@ -1,20 +1,17 @@
 const API = {
     async request(path, options = {}) {
-        const token = localStorage.getItem('token');
         const headers = {
             'Content-Type': 'application/json',
             ...options.headers,
         };
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-        }
 
-        const response = await fetch(path, {...options, headers});
+        const response = await fetch(path, {
+            ...options,
+            headers,
+            credentials: 'include',
+        });
 
         if (response.status === 401) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('email');
             if (!window.location.pathname.includes('login') && !window.location.pathname.includes('register')) {
                 window.location.href = '/login.html';
             }
@@ -45,6 +42,14 @@ const API = {
             method: 'POST',
             body: JSON.stringify({email, password}),
         });
+    },
+
+    logout() {
+        return this.request('/api/auth/logout', {method: 'POST'});
+    },
+
+    me() {
+        return this.request('/api/auth/me');
     },
 
     listDocuments() {

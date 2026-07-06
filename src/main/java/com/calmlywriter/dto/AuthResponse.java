@@ -1,4 +1,4 @@
 package com.calmlywriter.dto;
 
-public record AuthResponse(String token, Long userId, String email) {
+public record AuthResponse(Long userId, String email) {
 }

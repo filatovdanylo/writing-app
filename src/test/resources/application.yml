@@ -10,3 +10,5 @@ app:
   jwt:
     secret: test-secret-key-at-least-32-characters-long
     expiration-ms: 3600000
+    cookie-name: auth_token
+    cookie-secure: false

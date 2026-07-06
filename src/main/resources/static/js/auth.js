@@ -1,34 +1,33 @@
 const Auth = {
-    saveSession(response) {
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('userId', response.userId);
-        localStorage.setItem('email', response.email);
+    async isLoggedIn() {
+        try {
+            await API.me();
+            return true;
+        } catch {
+            return false;
+        }
     },
 
-    clearSession() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        localStorage.removeItem('email');
-    },
-
-    isLoggedIn() {
-        return !!localStorage.getItem('token');
-    },
-
-    requireAuth() {
-        if (!this.isLoggedIn()) {
+    async requireAuth() {
+        const loggedIn = await this.isLoggedIn();
+        if (!loggedIn) {
             window.location.href = '/login.html';
         }
     },
 
-    redirectIfLoggedIn() {
-        if (this.isLoggedIn()) {
+    async redirectIfLoggedIn() {
+        const loggedIn = await this.isLoggedIn();
+        if (loggedIn) {
             window.location.href = '/editor.html';
         }
     },
 
-    logout() {
-        this.clearSession();
+    async logout() {
+        try {
+            await API.logout();
+        } catch {
+            // redirect even if logout request fails
+        }
         window.location.href = '/login.html';
     },
 };

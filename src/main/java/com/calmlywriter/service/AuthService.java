@@ -1,6 +1,7 @@
 package com.calmlywriter.service;
 
 import com.calmlywriter.dto.AuthResponse;
+import com.calmlywriter.dto.AuthResult;
 import com.calmlywriter.dto.LoginRequest;
 import com.calmlywriter.dto.RegisterRequest;
 import com.calmlywriter.entity.User;
@@ -30,26 +31,27 @@ public class AuthService {
     }
 
     @Transactional
-    public AuthResponse register(RegisterRequest request) {
+    public AuthResult register(RegisterRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new BadRequestException("Email is already registered");
         }
         User user = new User(request.email(), passwordEncoder.encode(request.password()));
         userRepository.save(user);
-        return buildAuthResponse(user);
+        return buildAuthResult(user);
     }
 
-    public AuthResponse login(LoginRequest request) {
+    public AuthResult login(LoginRequest request) {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UnauthorizedException("Invalid credentials"));
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new UnauthorizedException("Invalid credentials");
         }
-        return buildAuthResponse(user);
+        return buildAuthResult(user);
     }
 
-    private AuthResponse buildAuthResponse(User user) {
+    private AuthResult buildAuthResult(User user) {
         String token = jwtService.generateToken(user.getId(), user.getEmail());
-        return new AuthResponse(token, user.getId(), user.getEmail());
+        AuthResponse response = new AuthResponse(user.getId(), user.getEmail());
+        return new AuthResult(response, token);
     }
 }

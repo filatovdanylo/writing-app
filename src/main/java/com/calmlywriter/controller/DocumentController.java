@@ -2,6 +2,7 @@ package com.calmlywriter.controller;
 
 import com.calmlywriter.dto.DocumentRequest;
 import com.calmlywriter.dto.DocumentResponse;
+import com.calmlywriter.security.UserPrincipal;
 import com.calmlywriter.service.DocumentService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -59,6 +60,6 @@ public class DocumentController {
     }
 
     private Long currentUserId(Authentication authentication) {
-        return (Long) authentication.getPrincipal();
+        return ((UserPrincipal) authentication.getPrincipal()).userId();
     }
 }

@@ -6,15 +6,22 @@
     <title>Calmly Writer</title>
     <script>
         (function () {
-            var t = localStorage.getItem('theme') || 'light';
+            const t = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', t);
-            if (localStorage.getItem('token')) {
-                window.location.replace('/editor.html');
-            } else {
-                window.location.replace('/login.html');
-            }
         })();
     </script>
 </head>
-<body></body>
+<body>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script>
+    (async function () {
+        if (await Auth.isLoggedIn()) {
+            window.location.replace('/editor.html');
+        } else {
+            window.location.replace('/login.html');
+        }
+    })();
+</script>
+</body>
 </html>

@@ -6,7 +6,7 @@
     <title>Sign in — Calmly Writer</title>
     <script>
         (function () {
-            var t = localStorage.getItem('theme') || 'light';
+            const t = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', t);
         })();
     </script>
@@ -39,26 +39,27 @@
 <script src="/js/auth.js"></script>
 <script src="/js/theme.js"></script>
 <script>
-    Auth.redirectIfLoggedIn();
+    (async () => {
+        await Auth.redirectIfLoggedIn();
 
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('submit-btn');
-        const errorEl = document.getElementById('error-message');
-        errorEl.textContent = '';
-        btn.disabled = true;
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const errorEl = document.getElementById('error-message');
+            errorEl.textContent = '';
+            btn.disabled = true;
 
-        try {
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
-            const response = await API.login(email, password);
-            Auth.saveSession(response);
-            window.location.href = '/editor.html';
-        } catch (err) {
-            errorEl.textContent = "Invalid credentials";
-            btn.disabled = false;
-        }
-    });
+            try {
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                await API.login(email, password);
+                window.location.href = '/editor.html';
+            } catch (err) {
+                errorEl.textContent = "Invalid credentials";
+                btn.disabled = false;
+            }
+        });
+    })();
 </script>
 </body>
 </html>

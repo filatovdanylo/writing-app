@@ -33,8 +33,7 @@ public class Document {
     @Column(nullable = false)
     private String title = "Untitled";
 
-    @Lob
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content = "";
 
     @Column(nullable = false, updatable = false)
